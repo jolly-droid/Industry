@@ -22,6 +22,19 @@ static void forkMe(int id){
     }
 }
 
+static void forkMeWithPipes(int id){
+/*
+ * https://www.youtube.com/watch?v=Mqb2dVRe0uo
+
+https://www.youtube.com/watch?v=6u_iPGVkfZ4
+
+https://www.youtube.com/watch?v=2hba3etpoJg
+
+https://www.youtube.com/watch?v=IFEFVXvjiHY
+ */
+
+}
+
 int main() {
     int id = fork();
     forkMe(id);
