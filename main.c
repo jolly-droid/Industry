@@ -15,10 +15,10 @@
 //this method forks the process
 static void forkMe(int id){
     if(id == 0){
-        fprintf(stdout,"this is the child");
+        fprintf(stdout,"this is the child-id: %d\n", id);
 
     }else{
-        fprintf(stdout, "this is the parent");
+        fprintf(stdout, "this is the parent-id: %d\n", id);
     }
 }
 
