@@ -4,7 +4,7 @@
 #include <string.h>
 #include <errno.h>
 
-
+/*
 //this method forks the process
 static void forkMe(int id){
     // added errohandeling
@@ -48,12 +48,12 @@ static void forkMeWithPipes(int id){
             close(fd[0]);
             printf( "i got this number form child: %d\n", y);
     }
-}
+}*/
 /*an example from real life
  *
 */
 static void forkAndSum(int id, int arr[]){
-    int arrSize = sizeof(arr) / sizeof(int);
+    int arrSize = sizeof(arr)/ sizeof(int);
     int fd[2];
     int start, end; //start and end of array
     if (pipe(fd) == -1){
@@ -74,7 +74,7 @@ static void forkAndSum(int id, int arr[]){
 
     //summing up
     int sum = 0;
-    for(int i = 0; i < end; i++){
+    for(int i = start; i < end; i++){
         sum += arr[i];
     }
 
@@ -85,10 +85,13 @@ static void forkAndSum(int id, int arr[]){
     }
 
     if (id == 0){ // child process
+
         close(fd[0]);
         if (write(fd[1], &sum, sizeof (sum)) == -1) exit(EXIT_FAILURE);
         close(fd[1]);
+
     }else{ //parent process
+
         int sumFromChild = 0;
         close(fd[1]);
         if(read(fd[0], &sumFromChild, sizeof (sumFromChild)) == -1) exit(EXIT_FAILURE);
@@ -98,7 +101,6 @@ static void forkAndSum(int id, int arr[]){
         printf("this is sum %d\n", totalSum);
 
     }
-
 
 
 }
