@@ -8,6 +8,7 @@
 //this method forks the process
 static void forkMe(int id){
     // added errohandeling
+    id = fork();
     switch(id){
         case -1:
             fprintf(stderr, "fork went wrong %s\n", strerror(errno));
@@ -28,6 +29,8 @@ static void forkMeWithPipes(int id){
         fprintf(stderr, "piping went wrong: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
+    id = fork();
+
     if(id == -1) exit(EXIT_FAILURE);
     if(id == 0) { //child process
         close(fd[0]); // close read end
@@ -42,7 +45,7 @@ static void forkMeWithPipes(int id){
             int y;
             if(read(fd[0], &y, sizeof(int)) == -1) exit(EXIT_FAILURE);
             close(fd[0]);
-            printf( "i got this number form child: %d\n", &y);
+            printf( "i got this number form child: %d\n", y);
     }
 
 
@@ -50,7 +53,7 @@ static void forkMeWithPipes(int id){
 }
 
 int main() {
-    int id = fork();
+    int id = 0;
    // forkMe(id);
     forkMeWithPipes(id);
    return 0;
