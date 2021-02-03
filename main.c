@@ -49,22 +49,53 @@ static void forkMeWithPipes(int id){
             printf( "i got this number form child: %d\n", y);
     }
 }
-//an example from real life
+/*an example from real life
+ *
+*/
 static void forkAndSum(int id, int arr[]){
-    int arrSize = sizeof(arr)/ sizeof (int);
+    int arrSize = sizeof(arr) / sizeof(int);
     int fd[2];
+    int start, end; //start and end of array
     if (pipe(fd) == -1){
         printf("error on piping");
         exit(EXIT_FAILURE);
     }
 
     id = fork();
+    if (id == -1) exit (EXIT_FAILURE);
 
-    if (id == 0){
+    if (id == 0){ // child process
+        start = 0;
+        end = start + arrSize/2;
+    }else{ //parent process
+        start = arrSize/2;
+        end = arrSize;
+    }
 
-    }else{
+    //summing up
+    int sum = 0;
+    for(int i = 0; i < end; i++){
+        sum += arr[i];
+    }
+
+    if (id == 0){ // child process
+     printf("calculated partial sum - child %d", sum);
+    }else{ //parent process
+        printf("calculated partial sum - parent %d", sum);
+    }
+
+    if (id == 0){ // child process
+        close(fd[0]);
+        if (write(fd[1], &sum, sizeof (sum)) == -1) exit(EXIT_FAILURE);
+        close(fd[1]);
+    }else{ //parent process
+        int sumFromChild = 0;
+        close(fd[1]);
+        if(read(fd[0], &sumFromChild, sizeof (sumFromChild)) == -1) exit(EXIT_FAILURE);
+        close(fd[0]);
 
     }
+
 }
 
 int main(int argc, char* argv[]) {
