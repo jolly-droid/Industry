@@ -113,3 +113,6 @@ int main(int argc, char* argv[]) {
     forkAndSum(id, arr);
    return 0;
 }
+
+//https://www.youtube.com/watch?v=2hba3etpoJg
+//https://www.youtube.com/watch?v=IFEFVXvjiHY
