@@ -23,6 +23,7 @@ static void forkMe(int id){
 
 }
 
+//forking this time with pipes
 static void forkMeWithPipes(int id){
     int fd [2];
     if(pipe(fd) == -1){
@@ -47,14 +48,30 @@ static void forkMeWithPipes(int id){
             close(fd[0]);
             printf( "i got this number form child: %d\n", y);
     }
+}
+//an example from real life
+static void forkAndSum(int id, int arr[]){
+    int arrSize = sizeof(arr)/ sizeof (int);
+    int fd[2];
+    if (pipe(fd) == -1){
+        printf("error on piping");
+        exit(EXIT_FAILURE);
+    }
 
+    id = fork();
 
+    if (id == 0){
 
+    }else{
+
+    }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     int id = 0;
+    int arr[] = {1,2,4,5,6};
    // forkMe(id);
-    forkMeWithPipes(id);
+   //forkMeWithPipes(id);
+    forkAndSum(id, arr);
    return 0;
 }
