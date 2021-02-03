@@ -57,7 +57,7 @@ static void forkAndSum(int id, int arr[]){
     int fd[2];
     int start, end; //start and end of array
     if (pipe(fd) == -1){
-        printf("error on piping");
+        printf("error on piping\n");
         exit(EXIT_FAILURE);
     }
 
@@ -79,9 +79,9 @@ static void forkAndSum(int id, int arr[]){
     }
 
     if (id == 0){ // child process
-     printf("calculated partial sum - child %d", sum);
+     printf("calculated partial sum - child %d \n", sum);
     }else{ //parent process
-        printf("calculated partial sum - parent %d", sum);
+        printf("calculated partial sum - parent %d \n", sum);
     }
 
     if (id == 0){ // child process
@@ -94,7 +94,12 @@ static void forkAndSum(int id, int arr[]){
         if(read(fd[0], &sumFromChild, sizeof (sumFromChild)) == -1) exit(EXIT_FAILURE);
         close(fd[0]);
 
+        int totalSum = sum + sumFromChild;
+        printf("this is sum %d\n", totalSum);
+
     }
+
+
 
 }
 
