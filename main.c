@@ -104,6 +104,30 @@ static void forkAndSum(int id, int arr[]){
 
 
 }
+static void forkAgain(int id){
+    int fd[2];
+    if (pipe(fd) == -1) exit(EXIT_FAILURE);
+
+    id = fork();
+
+    switch(id){
+        case -1: exit(EXIT_FAILURE);
+        break;
+        case 0:
+            close(fd[0]);
+            fprintf(stdout, "here we have le child");
+            char f [] = "WE ware here";
+            if (write(fd[1], &f, sizeof(char)) == -1) exit(EXIT_FAILURE);
+            close(fd[1]);
+            break;
+
+        default:
+            exit(EXIT_FAILURE);
+            break;
+
+    }
+
+}
 
 int main(int argc, char* argv[]) {
     int id = 0;
@@ -111,6 +135,7 @@ int main(int argc, char* argv[]) {
    // forkMe(id);
    //forkMeWithPipes(id);
     forkAndSum(id, arr);
+    forkAgain(id);
    return 0;
 }
 
