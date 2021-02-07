@@ -132,6 +132,7 @@ static void forkAgain(int id){
 
 static int intmul(int a, int b, int id){
     int fd [2];
+    int ret  = 0;
 
     if(pipe(fd) == -1) exit(EXIT_FAILURE);
     id = fork();
@@ -151,9 +152,10 @@ static int intmul(int a, int b, int id){
             int sum = b + a;
             close(fd[0]);
             fprintf(stdout, "this is result:%d", sum);
+            ret = sum;
         break;
     }
-
+    return ret;
 
 }
 
