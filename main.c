@@ -79,7 +79,7 @@ static void forkAndSum(int id, int arr[]){
     }
 
     if (id == 0){ // child process
-     printf("calculated partial sum - child %d \n", sum);
+        printf("calculated partial sum - child %d \n", sum);
     }else{ //parent process
         printf("calculated partial sum - parent %d \n", sum);
     }
@@ -129,13 +129,46 @@ static void forkAgain(int id){
 
 }
 
+
+static int intmul(int a, int b, int id){
+    int fd [2];
+
+    if(pipe(fd) == -1) exit(EXIT_FAILURE);
+    id = fork();
+
+    switch(id){
+        case -1: exit(EXIT_FAILURE);
+        case 0: // child process
+            close(fd[0]);
+            a = a +5;
+            if(write (fd[1], &a, sizeof(int)) == -1) exit(EXIT_FAILURE);
+            close(fd[1]);
+        break;
+
+        default: // parent process
+            close(fd[1]);
+            if(read(fd[0], &b, sizeof(int)) == -1) exit(EXIT_FAILURE);
+            int sum = b + a;
+            close(fd[0]);
+            fprintf(stdout, "this is result:%d", sum);
+        break;
+    }
+
+
+}
+
 int main(int argc, char* argv[]) {
     int id = 0;
     int arr[] = {1,2,4,5,6};
    // forkMe(id);
    //forkMeWithPipes(id);
-    forkAndSum(id, arr);
-    forkAgain(id);
+   // forkAndSum(id, arr);
+    //forkAgain(id);
+    int a = 5;
+    int b = 6;
+    int ret = intmul(a, b, id);
+    printf(stdout, "this is result: %d", ret);
+
    return 0;
 }
 
