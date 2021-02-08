@@ -3,4 +3,4 @@ project(Industry)
 
 set(CMAKE_CXX_STANDARD 98)
 
-add_executable(Industry main.c)
+add_executable(Industry main.c library.h library.c server.c server.h)
