@@ -11,8 +11,26 @@ int main(int argc, char* argv[]) {
     //forkAgain(id);
     int a = 5;
     int b = 6;
-    int ret = intmul(a, b, id);
-    printf(stdout, "this is result: %d", ret);
+    int ret1 = intmul(a, b, id);
+    int ret2 = intmul(a, b, id);
+    printf(stdout, "this is result: %d", ret1);
+
+    //signals
+    //check process status
+    int status;
+    int process = id;
+    waitpid(id, &status, 0);
+
+    if(WEXITSTATUS(status)){
+        exit(EXIT_FAILURE);
+    }
+    // while()
+    while(true){
+        int a = 4;
+        //read input from intmul and compare
+        if(ret1 == ret2) return 1;
+        //done;
+    }
 
    return 0;
 }

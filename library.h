@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <sys/wait.h>
+#include <stdbool.h>
+
 
 
 #ifndef INDUSTRY_LIBRARY_H

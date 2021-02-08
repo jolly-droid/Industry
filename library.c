@@ -129,10 +129,76 @@ void forkAgain(int id){
 
 }
 
+/*
+ * \section*{Assignment -- Integer Multiplication}
+Implement an algorithm for the efficient multiplication of large integers.
+
+The program takes two hexadecimal integers $A$ and $B$ with an equal number of digits as input,
+multiplies them and prints the result.
+The input is read from stdin and consists of two lines:
+the first line is the integer $A$ and the second line is the integer $B$.
+
+Your program must accept any number of digits.
+Terminate the program with exit status |EXIT_FAILURE|
+if an invalid input is encountered
+or if the two integers do not have equal length.
+
+The multiplication of the input values is calculated recursively,
+i.e. by the program calling itself:
+If $A$ and $B$ both consist of only 1 hexadecimal digit, then multiply them,
+write the result to stdout and exit with status |EXIT_SUCCESS|.
+ Otherwise $A$ and $B$ both consist of $n>1$ digits. Split them both into two parts each,
+with each part consisting of $n/2$ digits:
+
+Terminate the program with exit status \verb|EXIT_FAILURE|
+if the number of digits is not even.
+
+\item Using \osuefunc{fork(2)} and \osuefunc{execlp(3)},
+recursively execute this program in four child processes,
+one for each of the multiplications $A_h\cdot B_h$, $A_h\cdot B_l$, $A_l\cdot B_h$ and  $A_l\cdot B_l$.
+Use two unnamed pipes per child
+to redirect \osueglvar{stdin} and \osueglvar{stdout}
+(see \osuefunc{pipe(2)} and \osuefunc{dup2(3)}).
+Write the two values to be multiplied to \osueglvar{stdin} of each child.
+Read the respective result from each child's \osueglvar{stdout}.
+The four child processes must run simultaneously!
+
+\item Use \osuefunc{wait(2)} or \osuefunc{waitpid(2)}
+to read the exit status of the children.
+Terminate the program with exit status \verb|EXIT_FAILURE|
+if the exit status of any of the two child processes is not \verb|EXIT_SUCCESS|.
+
+\item The result of the multiplication $A\cdot B$ can now be calculated as follows:
+\[
+A\cdot B=A_h\cdot B_h\cdot 16^n + A_h\cdot B_l\cdot 16^{n/2} + A_l\cdot B_h\cdot 16^{n/2} + A_l\cdot B_l
+\]
+
+Find a clever way to write the result of this operation to \texttt{stdout},
+even if the numbers are too large for the C data types.
+Remember that your program must deal with integers of any size!
+Leading zeros should also be printed,
+such that the result has twice as many digits as the input values.
+Terminate the program with exit status \verb|EXIT_SUCCESS|.
+
+ Think of a way to add the four intermediate results together
+one digit at a time while keeping track of the carry.
+ In order to avoid endless recursion\footnote{\url{http://en.wikipedia.org/wiki/Fork\_bomb}},
+fork only if the input number is greater than 1.
+\item To output error messages and debug messages, always use
+\osueglvar{stderr} because \osueglvar{stdout} is redirected in most cases.
+\item Due to the rejection of sequences of odd length by each (child-)process,
+the algorithm has the property of only correctly processing sequences
+where the length is a power of 2.
+\end{itemize}
+ */
+
+
 //TODO: returns some pointerstuff not the number
 int intmul(int a, int b, int id){
     int fd [2];
-    int ret  = 0;
+    int ret = 0;
+    if (a == 1 || b == 1) return a*b;
+    if (sizeof(int)*a != sizeof(int)*b) exit(EXIT_FAILURE);
 
     if(pipe(fd) == -1) exit(EXIT_FAILURE);
     id = fork();
@@ -144,6 +210,7 @@ int intmul(int a, int b, int id){
             a = a +5;
             if(write (fd[1], &a, sizeof(int)) == -1) exit(EXIT_FAILURE);
             close(fd[1]);
+            // call exec
             break;
 
         default: // parent process
@@ -155,6 +222,10 @@ int intmul(int a, int b, int id){
             ret = sum;
             break;
     }
+
+
+
+
     return ret;
 
 }
