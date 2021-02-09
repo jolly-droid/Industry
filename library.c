@@ -229,3 +229,34 @@ int intmul(int a, int b, int id){
     return ret;
 
 }
+
+static void practice(int id){
+    //first pipe
+    int fd[2];
+    if(pipe(fd) == -1) exit(EXIT_FAILURE);
+
+    //then fork
+    id = fork();
+    int transport = 9;
+    int readme = 0;
+    //then say what children do
+    switch(id){
+        case -1 : exit(EXIT_FAILURE);
+        case 0: // child
+            close(fd[0]);
+            if(write(fd[1], &transport, sizeof(int)) == -1) exit(EXIT_FAILURE);
+            //execlp(myprog, parameter1, parameter 2);
+            close(fd[1]);
+        break;
+
+        default:
+            close(fd[1]);
+            if(read(fd[0], &readme, sizeof(int))== -1) exit(EXIT_FAILURE);
+            close(fd[0]);
+
+    }
+
+    int sum = transport + readme;
+    fprintf(stdout, "see the result: %d", sum);
+   //then compare and rest of the programm
+}
