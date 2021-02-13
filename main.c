@@ -3,6 +3,7 @@
 
 
 int main(int argc, char* argv[]) {
+    myprog = argv[0];
     int id = 0;
     int arr[] = {1,2,4,5,6};
    // forkMe(id);
