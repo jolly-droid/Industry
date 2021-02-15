@@ -17,6 +17,8 @@
 #include <time.h>
 
 char* myprog;
+char* i_arg, *p_arg;
+char* port, *ind;
 
 char* const DEFAULT_PORT = "80";
 char DEFAULT_INDEX [] = {"/index.html"};
