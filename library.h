@@ -28,3 +28,8 @@ void forkAgain(int id);
 //trying to implement an exercise
 // @return returns the sum of the two given numbers
 int intmul(int a, int b, int id);
+
+//just another pracits method
+void pracitse(char* myprog);
+//conitnuing the processes with status update check
+void statusupdate(int id);

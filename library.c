@@ -294,6 +294,13 @@ void practise (char* myprog){
     char* result = strcat(recieved,adme);
 
     fprintf(stdout, "this + %s", result);
-
+    statusupdate(id);
 
 }
+
+void statusupdate(int id){
+    int status;
+    waitpid(id, &status, 0);
+}
+
+
