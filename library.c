@@ -244,6 +244,7 @@ static void practice(int id){
         case -1 : exit(EXIT_FAILURE);
         case 0: // child
             close(fd[0]);
+
             if(write(fd[1], &transport, sizeof(int)) == -1) exit(EXIT_FAILURE);
             //execlp(myprog, parameter1, parameter 2);
             close(fd[1]);
@@ -259,4 +260,40 @@ static void practice(int id){
     int sum = transport + readme;
     fprintf(stdout, "see the result: %d", sum);
    //then compare and rest of the programm
+}
+
+void practise (char* myprog){
+    int fd[2];
+    pipe(fd);
+
+    int id = fork();
+
+    char* recieved = "";
+    switch(id){
+        case 0:
+            //child process
+            close(fd[0]);
+            char* message = "thisistheDARKSIDE";
+            if(write(fd[1], message, sizeof(char)) == -1) exit(EXIT_FAILURE);
+            close(fd[1]);
+           if( execlp(myprog, id, NULL) == -1) exit(EXIT_FAILURE);
+            break;
+        case -1:
+            fprintf(stderr, "error on forking");
+            exit(EXIT_FAILURE);
+        default:
+            //parent
+            close(fd[1]);
+            if(read(fd[0], recieved, sizeof(char)) == -1) exit(EXIT_FAILURE);
+            close(fd[0]);
+            break;
+
+
+    }
+    char* adme = "LOL";
+    char* result = strcat(recieved,adme);
+
+    fprintf(stdout, "this + %s", result);
+
+
 }
