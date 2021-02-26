@@ -301,6 +301,8 @@ void practise (char* myprog){
 void statusupdate(int id){
     int status;
     waitpid(id, &status, 0);
+
+    if(WEXITSTATUS(status)) exit(EXIT_FAILURE);
 }
 
 
