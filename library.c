@@ -305,4 +305,41 @@ void statusupdate(int id){
     if(WEXITSTATUS(status)) exit(EXIT_FAILURE);
 }
 
+void pracitse2 (void){
+    char* fd [2][2];
 
+    pipe(fd);
+    int id = fork();
+    char* mess;
+    char* red;
+
+    switch(id){
+        case -1: exit(EXIT_FAILURE);
+        case 0: //child process;
+        close(fd[0][0]);
+        close(fd[0][1]);
+
+        if(write (fd, mess, sizeof(char*)) == -1) exit(EXIT_FAILURE);
+
+        close(fd[1][0]);
+        close(fd[1][1]);
+        break;
+
+        default: // parent process
+            close(fd[1][0]);
+            close(fd[1][1]);
+
+
+            if(read (fd, red, sizeof(char*)) == -1) exit(EXIT_FAILURE);
+
+            close(fd[0][0]);
+            close(fd[0][1]);
+            break;
+
+    }
+    char* result = red;
+    fprintf(stdout, "this is result %s", result);
+
+    //check the lines
+    statusupdate(id);
+}
