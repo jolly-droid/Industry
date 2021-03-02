@@ -343,3 +343,36 @@ void pracitse2 (void){
     //check the lines
     statusupdate(id);
 }
+
+
+void practise3 (int ix){
+    int id = ix;
+    int* fd [2][2];
+    pipe(fd);
+    id = fork();
+
+    char* info = "this is the info i am giving you !";
+    char* getinf = "";
+
+    switch(id){
+        case -1: exit(EXIT_FAILURE);
+        case 0: // child process
+            close(fd[0][1]);
+            close(fd[0][0]);
+            if ( write(fd[1][0], info, sizeof(char*)) == -1) exit(EXIT_FAILURE);
+            close(fd[1][1]);
+            close(fd[1][0]);
+
+        break;
+        default: // parent process
+            close(fd[1][1]);
+            close(fd[1][0]);
+            if ( read(fd[1][0], getinf, sizeof(char*)) == -1) exit(EXIT_FAILURE);
+            close(fd[0][1]);
+            close(fd[0][0]);
+            break;
+    }
+
+    statusupdate(id);
+
+}
