@@ -376,3 +376,7 @@ void practise3 (int ix){
     statusupdate(id);
 
 }
+
+void pracit (int id){
+   forki();
+}

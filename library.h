@@ -34,5 +34,7 @@ void pracitse(char* myprog);
 //conitnuing the processes with status update check
 void statusupdate(int id);
 
-
 void pracitse2(void);
+
+void pracit (int id);
+int forki (void);
